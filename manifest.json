@@ -1,0 +1,37 @@
+{
+"update_url": "https://clients2.google.com/service/update2/crx",
+
+	"name": "网易云音乐(Unofficial)",
+	"version": "1.5",
+	"manifest_version": 2,
+	"description": "网易云音乐 发现好音乐",
+	"browser_action": {
+		"default_icon": {
+			"19": "images/logo_19.png",
+			"38": "images/logo_38.png"
+		},
+		"default_popup": "popup.html",
+		"default_title": "网易云音乐"
+	},
+	"icons": {
+		"16": "images/logo_16.png",
+		"48": "images/logo_48.png",
+		"128": "images/logo_128.png"
+	},
+	"background": {
+		"page": "background.html"
+	},
+	"optional_permissions": [
+		"background"
+	],
+	"permissions": [
+		"notifications",
+		"webRequest",
+		"storage",
+		"webRequestBlocking",
+		"*://music.163.com/*"
+	],
+	"web_accessible_resources": [
+		"images/*"
+	]
+}
