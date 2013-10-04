@@ -467,7 +467,7 @@ a {
 	background: #ddd;
 }
 
-.noresult {
+.noresult, .loadinglist {
 	padding: 30px;
 	color: #2d2d2d;
 	font-size: 12px;
@@ -560,4 +560,19 @@ a {
 	width: 16px;
 	height: 16px;
 	background: url(/images/soundbutton.png);
+}
+
+.removeall, .addall {
+	height: 18px;
+	line-height: 18px;
+	font-size: 12px;
+	color: #aaa;
+	text-align: right;
+	padding-right: 10px;
+	background: #f8f8f8;
+}
+
+.removeall:hover, .addall:hover {
+	text-decoration: underline;
+	cursor: default;
 }

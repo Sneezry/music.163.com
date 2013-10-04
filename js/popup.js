@@ -6,6 +6,7 @@ window.onhashchange = function(){
 var change;
 var playingid = 0;
 var sound;
+var showmsgcount;
 
 document.getElementById('searchbox').onkeydown = function(){
 	e = event.keyCode;
@@ -165,7 +166,7 @@ function action(cmd){
 	}
 	else if(cmd.substr(0,4) == 'add-'){
 		var sid = cmd.substr(4);
-		chrome.runtime.sendMessage({add: sid});
+		chrome.runtime.sendMessage({add: [sid]});
 		showMsg('已添加至列表。');
 		return;
 	}
@@ -239,10 +240,11 @@ function action(cmd){
 }
 
 function showMsg(msg){
+	clearTimeout(showmsgcount);
 	document.getElementById('msg').innerHTML = msg;
 	document.getElementById('msg').className = 'slideIn';
 	document.getElementById('msg').style.display = 'block';
-	setTimeout(function(){
+	showmsgcount = setTimeout(function(){
 		document.getElementById('msg').className = 'slideOut';
 		setTimeout(function(){document.getElementById('msg').style.display = 'none';},200);
 	}, 3000);

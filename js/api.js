@@ -155,8 +155,18 @@ var api = {
 			}
 		}, 5000);
 	},
-	song: function(ids, play){
-		var url = 'http://music.163.com/api/song/detail?ids=['+ids.join(',')+']';
+	song: function(ids, play, offset, songs){
+		if(!offset){
+			offset = 0;
+		}
+		if(!songs){
+			songs = new Array();
+		}
+		var tmpids = new Array();
+		for(var i=0; i<100 && i+offset<ids.length; i++){
+			tmpids.push(ids[i+offset]);
+		}
+		var url = 'http://music.163.com/api/song/detail?ids=['+tmpids.join(',')+']';
 		this.httpRequest('GET', url, null, false, function(result){
 			if(result == -1){
 				showMsg('请求错误，请稍后重试。');
@@ -165,7 +175,14 @@ var api = {
 				showMsg('请求超时，请稍后重试。');
 			}
 			else{
-				ui.song(JSON.parse(result), play);
+				result = JSON.parse(result);
+				songs = songs.concat(result.songs);
+			}
+			if(offset+100<ids.length){
+				api.song(ids, play, offset+100, songs);
+			}
+			else{
+				ui.song(songs, play);
 			}
 		}, 5000);
 	},
@@ -374,8 +391,7 @@ var ui = {
 			document.getElementById('main').appendChild(noresult);
 		}
 	},
-	song: function(result, play){
-		var songs = result.songs;
+	song: function(songs, play){
 		var songlist = new Array();
 		for(var i in songs){
 			songlist.push({
@@ -405,6 +421,32 @@ var ui = {
 		this.song_list(songlist);
 	},
 	song_list: function(songlist, play){
+		if(!play){
+			var ids = new Array();
+			for(var i in songlist){
+				ids.push(songlist[i].id);
+			}
+			var addall = document.createElement('div');
+			addall.className = 'addall';
+			addall.innerHTML = '将全部音乐加入播放列表';
+			addall.onclick = function(){
+				showMsg('已全部添加至列表。');
+				chrome.runtime.sendMessage({add: ids});
+			}
+			document.getElementById('main').appendChild(addall);
+		}
+		else{
+			var removeall = document.createElement('div');
+			removeall.className = 'removeall';
+			removeall.innerHTML = '清空播放列表';
+			removeall.onclick = function(){
+				this.innerHTML = '再次点击确定清空播放列表';
+				this.onclick = function(){
+					chrome.runtime.sendMessage({remove: 'all'});
+				}
+			}
+			document.getElementById('main').appendChild(removeall);
+		}
 		for(var i in songlist){
 			var songlistbox = document.createElement('div');
 			songlistbox.className = 'songlist';

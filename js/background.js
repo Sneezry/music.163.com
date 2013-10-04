@@ -56,7 +56,7 @@ chrome.runtime.onMessage.addListener(
 		}
 		else if(request.song){
 			playing = true;
-			addtolist(request.song);
+			addtolist([request.song]);
 			api.song(request.song);
 			chrome.runtime.sendMessage({action: 'playlist'});
 			clearTimeout(chkdr);
@@ -64,7 +64,7 @@ chrome.runtime.onMessage.addListener(
 		}
 		else if(request.play){
 			playing = true;
-			addtolist(request.play);
+			addtolist([request.play]);
 			api.song(request.play);
 			clearTimeout(chkdr);
 			chkdr = setTimeout(chkended, 500);
@@ -177,21 +177,31 @@ function chkended(){
 	}
 }
 
-function addtolist(id){
-	id = Number(id);
-	if(playlist.indexOf(id) == -1 && !isNaN(id)){
-		playlist.push(id);
-		chrome.storage.sync.set({'list':playlist});
-		rndlst.push(id);
+function addtolist(ids){
+	for(var i in ids){
+		id = Number(ids[i]);
+		if(playlist.indexOf(id) == -1 && !isNaN(id)){
+			playlist.push(id);
+			chrome.storage.sync.set({'list':playlist});
+			rndlst.push(id);
+		}
 	}
 }
 
 function delfromlist(id){
-	id = Number(id);
+	if(id == 'all'){
+		playlist = new Array();
+		rndlst = new Array();
+		chrome.storage.sync.set({'list':playlist});
+		return;
+	}
+	else{
+		id = Number(id);
+	}
 	if(playlist.indexOf(id) != -1){
 		playlist.splice(playlist.indexOf(id), 1);
-		chrome.storage.sync.set({'list':playlist});
 		rndlst.splice(rndlst.indexOf(id), 1);
+		chrome.storage.sync.set({'list':playlist});
 	}
 }
 
@@ -266,8 +276,15 @@ var api = {
 			}
 		}, 5000);
 	},
-	songurls: function(ids){
-		var url = 'http://music.163.com/api/song/detail?ids=['+ids.join(',')+']';
+	songurls: function(ids, offset){
+		if(!offset){
+			offset = 0;
+		}
+		var tmpids = new Array();
+		for(var i=0; i<100 && i+offset<ids.length; i++){
+			tmpids.push(ids[i+offset]);
+		}
+		var url = 'http://music.163.com/api/song/detail?ids=['+tmpids.join(',')+']';
 		this.httpRequest('GET', url, null, false, function(result){
 			if(result == -1){
 				return;
@@ -281,6 +298,9 @@ var api = {
 					urls.id.push(result.songs[i].id);
 					urls.url.push(result.songs[i].mp3Url);
 				}
+			}
+			if(offset+100<ids.length){
+				api.songurls(ids, offset+100);
 			}
 		}, 5000);
 	}
