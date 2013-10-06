@@ -93,7 +93,7 @@ chrome.runtime.onMessage.addListener(
 		if(request.b_list){
 			if(request.b_list.length){
 				playingid = request.playingid;
-				api.song(request.b_list, true);
+				ui.song(request.b_list, true);
 			}
 			else{
 				document.getElementById('main').innerHTML = '';

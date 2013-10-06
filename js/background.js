@@ -9,6 +9,7 @@ var urls = {
 	id:[],
 	url:[]
 };
+var songs = new Array();
 
 setHeaders({
 	"urls": [
@@ -48,7 +49,7 @@ chrome.runtime.onMessage.addListener(
 			playnext(true);
 		}
 		else if(request.action == 'list'){
-			chrome.runtime.sendMessage({b_list: (playlist.length?playlist:[]), playingid: playingid});
+			chrome.runtime.sendMessage({b_list: songs, playingid: playingid});
 		}
 		else if(request.mode){
 			playmode = request.mode;
@@ -182,16 +183,19 @@ function addtolist(ids){
 		id = Number(ids[i]);
 		if(playlist.indexOf(id) == -1 && !isNaN(id)){
 			playlist.push(id);
-			chrome.storage.sync.set({'list':playlist});
-			rndlst.push(id);
 		}
 	}
+	chrome.storage.sync.set({'list':playlist});
+	rndlst = mkrandomlist();
+	songs = new Array();
+	api.songurls(playlist);
 }
 
 function delfromlist(id){
 	if(id == 'all'){
 		playlist = new Array();
 		rndlst = new Array();
+		songs = new Array();
 		chrome.storage.sync.set({'list':playlist});
 		return;
 	}
@@ -202,6 +206,11 @@ function delfromlist(id){
 		playlist.splice(playlist.indexOf(id), 1);
 		rndlst.splice(rndlst.indexOf(id), 1);
 		chrome.storage.sync.set({'list':playlist});
+	}
+	for(var i in songs){
+		if(songs[i].id == id){
+			songs.splice(i, 1);
+		}
 	}
 }
 
@@ -251,7 +260,6 @@ var api = {
 	song: function(id){
 		id = Number(id);
 		playingid = id;
-		console.log(urls);
 		if(urls.id.indexOf(id) != -1){
 			var audio = document.getElementById('song');
 			audio.src = urls.url[urls.id.indexOf(id)];
@@ -268,6 +276,7 @@ var api = {
 			}
 			else{
 				result = JSON.parse(result);
+				songs.push(result.songs[0]);
 				urls.id.push(id);
 				urls.url.push(result.songs[0].mp3Url);
 				var audio = document.getElementById('song');
@@ -295,6 +304,7 @@ var api = {
 			else{
 				result = JSON.parse(result);
 				for(var i in result.songs){
+					songs.push(result.songs[i]);
 					urls.id.push(result.songs[i].id);
 					urls.url.push(result.songs[i].mp3Url);
 				}
