@@ -93,7 +93,13 @@ chrome.runtime.onMessage.addListener(
 		if(request.b_list){
 			if(request.b_list.length){
 				playingid = request.playingid;
-				ui.song(request.b_list, true);
+				if(request.b_list.length <= request.p_list){
+					api.song(request.p_list, true);
+					chrome.runtime.sendMessage({action: 'update'});
+				}
+				else{
+					ui.song(request.b_list, true);
+				}
 			}
 			else{
 				document.getElementById('main').innerHTML = '';

@@ -204,11 +204,14 @@ var api = {
 
 var ui = {
 	new: function(result){
+		var mainbg = document.createElement('div');
+		mainbg.id = 'mainbg';
+		document.getElementById('main').appendChild(mainbg);
 		var albums = result.albums;
 		for(var i in albums){
 			var albumslink = document.createElement('a');
 			albumslink.href = '#album-'+albums[i].id;
-			document.getElementById('main').appendChild(albumslink);
+			document.getElementById('mainbg').appendChild(albumslink);
 			var albumsbox = document.createElement('div');
 			albumsbox.className = 'albums';
 			albumslink.appendChild(albumsbox);
@@ -226,11 +229,14 @@ var ui = {
 		}
 	},
 	rank: function(result){
+		var mainbg = document.createElement('div');
+		mainbg.id = 'mainbg';
+		document.getElementById('main').appendChild(mainbg);
 		var playlists = result.playlists;
 		for(var i in playlists){
 			var listlink = document.createElement('a');
 			listlink.href = '#list-'+playlists[i].id;
-			document.getElementById('main').appendChild(listlink);
+			document.getElementById('mainbg').appendChild(listlink);
 			var listbox = document.createElement('div');
 			listbox.className = 'list';
 			listlink.appendChild(listbox);
@@ -248,11 +254,14 @@ var ui = {
 		}
 	},
 	list: function(result){
+		var mainbg = document.createElement('div');
+		mainbg.id = 'mainbg';
+		document.getElementById('main').appendChild(mainbg);
 		var playlists = result.playlists;
 		for(var i in playlists){
 			var listlink = document.createElement('a');
 			listlink.href = '#list-'+playlists[i].id;
-			document.getElementById('main').appendChild(listlink);
+			document.getElementById('mainbg').appendChild(listlink);
 			var listbox = document.createElement('div');
 			listbox.className = 'list';
 			listlink.appendChild(listbox);
@@ -270,11 +279,14 @@ var ui = {
 		}
 	},
 	topsinger: function(result){
+		var mainbg = document.createElement('div');
+		mainbg.id = 'mainbg';
+		document.getElementById('main').appendChild(mainbg);
 		var artists = result.artists;
 		for(var i in artists){
 			var artistlink = document.createElement('a');
 			artistlink.href = '#singer-'+artists[i].id;
-			document.getElementById('main').appendChild(artistlink);
+			document.getElementById('mainbg').appendChild(artistlink);
 			var artistbox = document.createElement('div');
 			artistbox.className = 'list';
 			artistlink.appendChild(artistbox);

@@ -49,7 +49,11 @@ chrome.runtime.onMessage.addListener(
 			playnext(true);
 		}
 		else if(request.action == 'list'){
-			chrome.runtime.sendMessage({b_list: songs, playingid: playingid});
+			chrome.runtime.sendMessage({b_list: songs, p_list: playlist, playingid: playingid});
+		}
+		else if(request.action == 'update'){
+			songs = new Array();
+			api.songurls(playlist);
 		}
 		else if(request.mode){
 			playmode = request.mode;
@@ -57,18 +61,20 @@ chrome.runtime.onMessage.addListener(
 		}
 		else if(request.song){
 			playing = true;
-			addtolist([request.song]);
-			api.song(request.song);
-			chrome.runtime.sendMessage({action: 'playlist'});
-			clearTimeout(chkdr);
-			chkdr = setTimeout(chkended, 500);
+			addtolist([request.song], function(){
+				api.song(request.song);
+				chrome.runtime.sendMessage({action: 'playlist'});
+				clearTimeout(chkdr);
+				chkdr = setTimeout(chkended, 500);
+			});
 		}
 		else if(request.play){
 			playing = true;
-			addtolist([request.play]);
-			api.song(request.play);
-			clearTimeout(chkdr);
-			chkdr = setTimeout(chkended, 500);
+			addtolist([request.play], function(){
+				api.song(request.play);
+				clearTimeout(chkdr);
+				chkdr = setTimeout(chkended, 500);
+			});
 		}
 		else if(request.action == 'isplaying'){
 			sendResponse({'playing': playing, 'mode': playmode, 'sound': sound});
@@ -178,17 +184,23 @@ function chkended(){
 	}
 }
 
-function addtolist(ids){
+function addtolist(ids, callback){
+	var newlist = new Array();
 	for(var i in ids){
 		id = Number(ids[i]);
 		if(playlist.indexOf(id) == -1 && !isNaN(id)){
 			playlist.push(id);
+			newlist.push(id);
 		}
 	}
-	chrome.storage.sync.set({'list':playlist});
-	rndlst = mkrandomlist();
-	songs = new Array();
-	api.songurls(playlist);
+	if(newlist.length >0){
+		chrome.storage.sync.set({'list':playlist});
+		rndlst = mkrandomlist();
+		api.songurls(newlist, 0, callback);
+	}
+	else{
+		callback();
+	}
 }
 
 function delfromlist(id){
@@ -285,7 +297,7 @@ var api = {
 			}
 		}, 5000);
 	},
-	songurls: function(ids, offset){
+	songurls: function(ids, offset, callback){
 		if(!offset){
 			offset = 0;
 		}
@@ -311,6 +323,9 @@ var api = {
 			}
 			if(offset+100<ids.length){
 				api.songurls(ids, offset+100);
+			}
+			else if(callback){
+				callback();
 			}
 		}, 5000);
 	}
