@@ -365,7 +365,7 @@ a {
 	color: #2d2d2d;
 	font-size: 12px;
 	line-height: 16px;
-	width: 220px;
+	/*width: 220px;*/
 	overflow: hidden;
 }
 
@@ -374,12 +374,21 @@ a {
 	color: #aaa;
 	font-size: 12px;
 	line-height: 16px;
-	width: 220px;
+	/*width: 220px;*/
 	overflow: hidden;
 }
 
 .songlist .info a {
 	color: #aaa;
+}
+
+.songlist div {
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.songlist:hover .name, .songlist:hover .info {
+	width: 240px;
 }
 
 .searchlist {
