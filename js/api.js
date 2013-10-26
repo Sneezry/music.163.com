@@ -480,12 +480,20 @@ var ui = {
 			songlistlink.appendChild(songlistname);
 			var songlistinfo = document.createElement('div');
 			songlistinfo.className = 'info';
-			songlistinfo.innerHTML = songlist[i].artists[0].name+' - '+songlist[i].album.name;
+			songlistinfo.innerHTML = this.format(songlist[i].artists)+' - '+'<a href="#album-'+songlist[i].album.id+'">'+songlist[i].album.name+'</a>';
 			songlistlink.appendChild(songlistinfo);
 			var songlistremove = document.createElement('a');
 			songlistremove.className = 'listrightbtn';
 			songlistremove.href = '#'+(play?'remove':'add')+'-'+songlist[i].id;
 			songlistlink.appendChild(songlistremove);
 		}
+	},
+	format: function(artists){
+		var html = '';
+		for(var i in artists){
+			html += (i == 0) ? '' : ', ';
+			html += '<a href="#singer-' + artists[i].id + '">' + artists[i].name + '</a>';
+		}
+		return html;
 	}
 };
