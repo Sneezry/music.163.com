@@ -117,7 +117,7 @@ var api = {
 				showMsg('请求超时，请稍后重试。');
 			}
 			else{
-				result = result.split('g_hotsongs = ')[1].split(';')[0];
+				result = result.split('g_hotsongs = ')[1].split(';</script>')[0];
 				ui.singer(JSON.parse(result));
 			}
 		}, 5000);
