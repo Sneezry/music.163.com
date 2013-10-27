@@ -21,19 +21,25 @@ setHeaders({
 	]
 });
 
-chrome.storage.sync.get('list', function(list){
-	if(list && list.list){
-		playlist = list.list;
-		rndlst = mkrandomlist();
-		api.songurls(playlist);
-	}
-});
+setTimeout(function(){
+	chrome.storage.sync.get('list', function(list){
+		if(list && list.list){
+			playlist = list.list;
+			rndlst = mkrandomlist();
+			api.songurls(playlist);
+		}
+	});
 
-chrome.storage.sync.get('mode', function(mode){
-	if(mode && mode.mode){
-		playmode = mode.mode;
-	}
-});
+	chrome.storage.sync.get('mode', function(mode){
+		if(mode && mode.mode){
+			playmode = mode.mode;
+		}
+	});
+},100);
+
+window.onerror = function(){
+	setTimeout(function(){window.location.reload();}, 1000);
+}
 
 chrome.runtime.onMessage.addListener(
 	function(request, sender, sendResponse){

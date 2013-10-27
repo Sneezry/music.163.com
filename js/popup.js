@@ -1,12 +1,18 @@
 document.body.style.height = '480px';
-window.onhashchange = function(){
-	action(location.hash.substr(1));
-}
 
 var change;
 var playingid = 0;
 var sound;
 var showmsgcount;
+var lasthash = location.hash;
+
+window.onhashchange = function(){
+	if(!lasthash && location.hash=='#playlist'){
+		return;
+	}
+	lasthash = location.hash;
+	action(location.hash.substr(1));
+}
 
 document.getElementById('searchbox').onkeydown = function(){
 	e = event.keyCode;
@@ -14,6 +20,10 @@ document.getElementById('searchbox').onkeydown = function(){
 		action('search');
 		event.returnValue = false;
 	}
+}
+
+document.getElementById('playlist').ondblclick = function(){
+	window.open('info.html', 'info');
 }
 
 document.getElementById('controlswitch').onclick = function(){

@@ -2,7 +2,7 @@
 "update_url": "https://clients2.google.com/service/update2/crx",
 
 	"name": "网易云音乐(Unofficial)",
-	"version": "1.8",
+	"version": "1.9",
 	"manifest_version": 2,
 	"description": "网易云音乐 发现好音乐",
 	"browser_action": {
