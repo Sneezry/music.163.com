@@ -108,6 +108,10 @@ var api = {
 		}, 5000);
 	},
 	singer: function(id){
+		if(!Number(id)) {
+			history.back();
+			return;
+		}
 		var url = 'http://music.163.com/artist?id='+id;
 		this.httpRequest('GET', url, null, false, function(result){
 			if(result == -1){
@@ -123,6 +127,10 @@ var api = {
 		}, 5000);
 	},
 	album: function(id){
+		if(!Number(id)) {
+			history.back();
+			return;
+		}
 		var url = 'http://music.163.com/album?id='+id;
 		this.httpRequest('GET', url, null, false, function(result){
 			if(result == -1){
@@ -187,6 +195,10 @@ var api = {
 		}, 5000);
 	},
 	list_detail: function(id){
+		if(!Number(id)) {
+			history.back();
+			return;
+		}
 		var url = 'http://music.163.com/api/playlist/detail?id='+id;
 		this.httpRequest('GET', url, null, false, function(result){
 			if(result == -1){
