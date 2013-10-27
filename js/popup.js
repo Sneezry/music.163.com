@@ -251,6 +251,8 @@ function action(cmd){
 		setTimeout(function(){
 			document.getElementById('main').className ='slideIn';
 			document.getElementById('main').style.display = 'block';
+			var playing = document.getElementsByClassName('songlinkplay');
+			if(playing.length > 0) playing[0].scrollIntoViewIfNeeded();
 		},200);
 	},200);
 }
