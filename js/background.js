@@ -220,6 +220,10 @@ function delfromlist(id){
 	else{
 		id = Number(id);
 	}
+	if(playingid == id) {
+		playingid = (playmode == 'random') ? rndlst[rndlst.indexOf(id) - 1] : playlist[playlist.indexOf(id) - 1];
+		playingid = (playingid) ? playingid : 0;
+	}
 	if(playlist.indexOf(id) != -1){
 		playlist.splice(playlist.indexOf(id), 1);
 		rndlst.splice(rndlst.indexOf(id), 1);
