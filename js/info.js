@@ -9,6 +9,9 @@ chrome.runtime.onMessage.addListener(
 );
 
 function showlist(list){
+	if(!list.length){
+		return '<h2>播放列表为空。</h2>'
+	}
 	var table = '<table><thead><tr><th>歌名</th><th>歌手</th><th>专辑</th><th>下载地址</th></tr></thead><tbody>';
 	for(var i in list){
 		table += '<tr>';

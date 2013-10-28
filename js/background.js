@@ -215,14 +215,14 @@ function delfromlist(id){
 		rndlst = new Array();
 		songs = new Array();
 		chrome.storage.sync.set({'list':playlist});
+		playnext(true);
 		return;
 	}
 	else{
 		id = Number(id);
 	}
 	if(playingid == id) {
-		playingid = (playmode == 'random') ? rndlst[rndlst.indexOf(id) - 1] : playlist[playlist.indexOf(id) - 1];
-		playingid = (playingid) ? playingid : 0;
+		playnext(true);
 	}
 	if(playlist.indexOf(id) != -1){
 		playlist.splice(playlist.indexOf(id), 1);
