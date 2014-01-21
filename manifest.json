@@ -26,6 +26,7 @@
 		"notifications",
 		"webRequest",
 		"storage",
+		"downloads",
 		"webRequestBlocking",
 		"*://music.163.com/*"
 	],
