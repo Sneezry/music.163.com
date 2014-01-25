@@ -1,4 +1,5 @@
 var list = [];
+var errs;
 
 chrome.runtime.sendMessage({action: 'list'});
 chrome.runtime.onMessage.addListener(
@@ -42,12 +43,13 @@ function showlist(){
 function downloadAll(){
 	var musicName, musicPath, musicUrl, show=false, count=0;
 	var listboxes = document.getElementsByName('list');
+	window.errs = 0;
 	for(var i=0; i<listboxes.length; i++){
 		if(!listboxes[i].checked){
 			continue;
 		}
 		count++;
-		musicName = list[i].name+'.mp3';
+		musicName = list[i].name.replace(/[\\\/:*?"<>|]/g, '#')+'.mp3';
 		musicPath = '163music/';
 		musicUrl = list[i].mp3Url;
 		chrome.downloads.download({
@@ -56,6 +58,11 @@ function downloadAll(){
 			'conflictAction': 'uniquify',
 			'saveAs': false
 		}, function(downloadId){
+			if(downloadId == undefined) {
+				console.log(chrome.runtime.lastError);
+				errs++;
+				return;
+			}
 			if(!show){
 				show = downloadId;
 			}
@@ -63,7 +70,7 @@ function downloadAll(){
 		});
 	}
 	if(count){
-		alert('全部下载任务添加完毕，请至下载目录下“163music”文件夹下查看。');
+		alert(count + '项下载任务添加完毕，请至下载目录下“163music”文件夹下查看。');
 		chrome.downloads.show(show);
 	}
 	else{
