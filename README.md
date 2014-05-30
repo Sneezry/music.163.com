@@ -1,4 +1,4 @@
-![网易云音乐](http://s2.music.126.net/style/web2/img/down/banner-pc.png?df7693b0261b92069f2d262da57e1860)
+![网易云音乐](https://lh4.googleusercontent.com/BihVxny4H25HADSslIWuT5LG5geO14ZS8WKw4bsXRHOLq4UPDeNI2NgSlcmYrBvH1AsVHScsKg=s640-h400-e365-rw)
 
 [到Chrome Web Store安装](https://chrome.google.com/webstore/detail/%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90unofficial/delggbphnbdcabagfomdehlcjcjgagje)
 
